@@ -1,9 +1,31 @@
 ﻿using System;
 namespace Utilities
 {
-    public static class DefaultConfig
+    public static class DefaultParameters
     {
         public const double StartFreq = 87.0;
+
+        public static readonly double[] k =
+        {
+            0.01,
+            0.03,
+            0.12,
+            0.2,
+            0.3,
+            0.26,
+            0.07
+        };
+
+        public static readonly double[] deltaA =
+        {
+            25,
+            18,
+            14,
+            9,
+            6,
+            5,
+            4
+        };
 
         public static readonly double[] HighFreqs =
         {

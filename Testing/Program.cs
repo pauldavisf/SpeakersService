@@ -13,10 +13,10 @@ namespace Testing
                 Console.WriteLine(pair.Key + " " + pair.Value);
 
             var octaveBands = OctaveBandsProcessing.GetOctaveBandsData(result, 
-                                                                       DefaultConfig.StartFreq, 
-                                                                       DefaultConfig.HighFreqs, 
-                                                                       DefaultConfig.RootFreqs,
-                                                                       DefaultConfig.NormalizeLevel);
+                                                                       DefaultParameters.StartFreq, 
+                                                                       DefaultParameters.HighFreqs, 
+                                                                       DefaultParameters.RootFreqs,
+                                                                       DefaultParameters.NormalizeLevel);
         }
     }
 }
