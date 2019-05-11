@@ -7,7 +7,7 @@ namespace Utilities
     {
         public static double[] W(double[] speech, double[] noise, double[] k, double[] deltaA, int from, int to)
         {
-            var w = new double[to - from];
+            var w = new double[to - from + 1];
 
             int i = 0;
             for (int q = from; q <= to; q++)

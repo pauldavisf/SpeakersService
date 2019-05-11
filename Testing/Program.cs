@@ -7,7 +7,10 @@ namespace Testing
     {
         static void Main(string[] args)
         {
-            var result = DataProcessing.GetSpectrumFromDataFile("/Users/paul/Desktop/2.txt");
+            var dataFile = "/Users/paul/Desktop/freqs.txt";
+            FileProcessing.PutFreqStatToFile("/Users/paul/Desktop/1.wav", dataFile);
+
+            var result = DataProcessing.GetSpectrumFromDataFile(dataFile);
 
             foreach(var pair in result)
                 Console.WriteLine(pair.Key + " " + pair.Value);
@@ -17,6 +20,16 @@ namespace Testing
                                                                        DefaultParameters.HighFreqs, 
                                                                        DefaultParameters.RootFreqs,
                                                                        DefaultParameters.NormalizeLevel);
+
+            var testW = Intelligibility.W(DefaultParameters.AverageSpeechLevels, 
+                                          DefaultParameters.WhiteNoiseLevels, 
+                                          DefaultParameters.k, 
+                                          DefaultParameters.deltaA, 
+                                          -30, 
+                                          30);
+
+            foreach (var w in testW)
+                Console.WriteLine(w);
         }
     }
 }
