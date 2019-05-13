@@ -1,43 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 using SpeakersService.Models;
+using static SpeakersService.Helpers.DbHelper;
 
 namespace SpeakersService.Controllers
 {
     public class HomeController : Controller
     {
+        ApplicationContext _context;
+        IHostingEnvironment _appEnvironment;
+
+        public HomeController(ApplicationContext context, IHostingEnvironment appEnvironment)
+        {
+            _context = context;
+            _appEnvironment = appEnvironment;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            return View(_context.Files.ToList());
         }
 
-        public IActionResult About()
+        [HttpPost]
+        public async Task<IActionResult> AddFile(IFormFile uploadedFile)
         {
-            ViewData["Message"] = "Your application description page.";
+            if (uploadedFile != null)
+            {
+                var fileFromDb = _context.Files.FirstOrDefault(f => f.Name == uploadedFile.FileName);
+                if (fileFromDb != null)
+                {
+                    _context.Files.Remove(fileFromDb);
+                    await _context.SaveChangesAsync();
+                }
 
-            return View();
-        }
+                // путь к папке Files
+                string path = "/Files/" + uploadedFile.FileName;
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
+                // сохраняем файл в папку Files в каталоге wwwroot
+                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                {
+                    await uploadedFile.CopyToAsync(fileStream);
+                }
 
-            return View();
-        }
+                FileModel file = new FileModel { Name = uploadedFile.FileName, Path = path };
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+                await _context.Files.AddAsync(file);
+                await _context.SaveChangesAsync();
+            }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return RedirectToAction("Index");
         }
     }
 }
