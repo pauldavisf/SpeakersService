@@ -21,6 +21,9 @@ namespace Testing
                                                                        DefaultParameters.RootFreqs,
                                                                        DefaultParameters.NormalizeLevel);
 
+            foreach (var band in octaveBands.Bands)
+                Console.WriteLine(band.NormalizedLevel);
+
             var testW = Intelligibility.W(DefaultParameters.AverageSpeechLevels, 
                                           DefaultParameters.WhiteNoiseLevels, 
                                           DefaultParameters.k, 
