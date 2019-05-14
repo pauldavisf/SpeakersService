@@ -1,0 +1,31 @@
+﻿@model IEnumerable<SpeakersService.Models.SpeakerViewModel>
+@{
+    ViewData["Title"] = "Добавление файла";
+}
+
+<h3>Выберите файл для загрузки</h3>
+
+<form asp-action="AddFile" asp-controller="Home" method="post" enctype="multipart/form-data">
+    <div class="input-group">
+        <label class="input-group-btn">
+            <span style="margin-bottom:10px; display: block; width: 200px; border-radius: 5px; padding: 5px; text-align:center; background-color: #fff; border: 2px solid #000; color: #000;" class="btn btn-primary">
+                Выбрать файл<input type="file" name="uploadedFile" id="uploadedFile" style="display: none;" multiple>
+            </span>
+        </label>
+        <input style="border: 0; background-color: #fff; box-shadow: none;" type="text" class="form-control" readonly>
+    </div>
+    <input type="submit" id="submit" value="Загрузить" style="display: block; width: 200px; border-radius: 5px; padding: 5px; text-align:center; background-color: #fff; border: 2px solid #000; color: #000;" />
+</form>
+<!--<form asp-action="AddFile" asp-controller="Home" method="post" enctype="multipart/form-data">
+    <div class="btn btn-dark btn-md float-left">
+        <input class="label__input" type="file" name="uploadedFile" id="uploadedFile" style="margin-left: 85px; margin-top: 10px;" />
+        <span>Выбрать файл</span>
+    </div>
+    <input type="submit" value="Загрузить" style="display: block; width: 200px; border-radius: 5px; padding: 5px; text-align:center; background-color: #fff; border: 2px solid #000; color: #000;" />
+</form>-->
+
+<h3>Все файлы:</h3>
+@foreach (var f in Model)
+{
+    <p>"@Url.Content(f.Path)"</p>
+}

@@ -6,6 +6,10 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using SpeakersService.Models;
 using static SpeakersService.Helpers.DbHelper;
+using Utilities;
+using System;
+using System.Collections.Generic;
+using static SpeakersService.Helpers.SpeakerExtension;
 
 namespace SpeakersService.Controllers
 {
@@ -22,7 +26,46 @@ namespace SpeakersService.Controllers
 
         public IActionResult Index()
         {
-            return View(_context.Files.ToList());
+            var modelsList = _context.Files.ToList();
+            var viewModels = new List<SpeakerViewModel>();
+
+            foreach(var model in modelsList)
+            {
+                viewModels.Add(model.ToViewModel());
+            }
+
+            return View(viewModels);
+        }
+
+        public void SaveSpeechToFile(double[] speech, string filename)
+        {
+            if (!Directory.Exists(Path.GetDirectoryName(filename)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(filename));
+            }
+
+            using (StreamWriter outputFile = new StreamWriter(filename, false, System.Text.Encoding.Default))
+            {
+                foreach (var val in speech)
+                    outputFile.WriteLine(val);
+            }
+        }
+
+        public void SaveWToFiles(Dictionary<string, double[]> W, string path)
+        {
+            foreach (var pair in W)
+            {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                using (StreamWriter outputFile = new StreamWriter(path + "/" + pair.Key, false, System.Text.Encoding.Default))
+                {
+                    foreach (var val in pair.Value)
+                        outputFile.WriteLine(val);
+                }
+            }
         }
 
         [HttpPost]
@@ -39,20 +82,43 @@ namespace SpeakersService.Controllers
 
                 // путь к папке Files
                 string path = "/Files/" + uploadedFile.FileName;
+                string filename = _appEnvironment.WebRootPath + path;
 
                 // сохраняем файл в папку Files в каталоге wwwroot
-                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                using (var fileStream = new FileStream(filename, FileMode.Create))
                 {
                     await uploadedFile.CopyToAsync(fileStream);
                 }
 
-                FileModel file = new FileModel { Name = uploadedFile.FileName, Path = path };
+                var speech = FileProcessing.GetSpeechLevelsFromFile(filename);
+                var w = FileProcessing.GetIntelligibilityForAllNoises(speech, DefaultParameters.DefaultNoisesDictionary);
 
-                await _context.Files.AddAsync(file);
+                var speechFile = _appEnvironment.WebRootPath + "/Files/" + Path.GetFileNameWithoutExtension(filename) + "/speech.dat";
+                SaveSpeechToFile(speech, speechFile);
+
+                var wPath = _appEnvironment.WebRootPath + "/Files/" + Path.GetFileNameWithoutExtension(filename) + "/W";
+                SaveWToFiles(w, wPath);
+
+                Speaker speaker = new Speaker { Name = uploadedFile.FileName, Speech_FileName = speechFile, Path = path, W_Path = wPath };
+
+                await _context.Files.AddAsync(speaker);
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Upload");
+        }
+
+        public IActionResult Upload()
+        {
+            var modelsList = _context.Files.ToList();
+            var viewModels = new List<SpeakerViewModel>();
+
+            foreach (var model in modelsList)
+            {
+                viewModels.Add(model.ToViewModel());
+            }
+
+            return View(viewModels);
         }
     }
 }

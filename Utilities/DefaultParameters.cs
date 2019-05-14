@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace Utilities
 {
     public static class DefaultParameters
@@ -105,5 +107,13 @@ namespace Utilities
         };
 
         public const double NormalizeLevel = 70.0;
+
+        public static readonly Dictionary<string, double[]> DefaultNoisesDictionary = new Dictionary<string, double[]>
+        {
+            {"Белый шум", WhiteNoiseLevels},
+            {"Розовый шум", PinkNoiseLevels},
+            {"Коричневый шум", BrownNoiseLevels}
+        };
+
     }
 }

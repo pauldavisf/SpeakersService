@@ -60,5 +60,17 @@ namespace Utilities
 
             return result;
         }
+
+        public static double[] GetNormalizedLevels(OctaveBands octaveBands)
+        {
+            var result = new double[octaveBands.Count];
+
+            for (int i = 0; i < octaveBands.Count; i++)
+            {
+                result[i] = octaveBands[i].NormalizedLevel;
+            }
+
+            return result;
+        }
     }
 }
