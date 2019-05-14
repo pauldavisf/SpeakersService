@@ -3,24 +3,24 @@
     ViewData["Title"] = "Результаты";
 }
 
-<h3>Просмотр результатов:</h3>
+<h1>Выберите диктора</h1>
 @foreach (var f in Model)
 {
+    <br />
     <a href="@(Context.Request.Path + "?speakerName=" + f.Name)">@Url.Content(f.Name)</a>
 }
 
 @{
     if (Context.Request.Query["speakerName"].Count != 0)
     {
-        <h3>Результаты для @(Context.Request.Query["speakerName"][0]):</h3>
-        <br />
+        <h2>Результаты для @(Context.Request.Query["speakerName"][0])</h2>
         var speakerName = Context.Request.Query["speakerName"][0];
 
         var speaker = Model.First(f => f.Name == speakerName);
 
         foreach (var noiseAndW in speaker.W)
         {
-            <h1>Разборчивость для вида шума "@(noiseAndW.Key)": </h1>
+            <h3>Разборчивость для вида шума "@(noiseAndW.Key)": </h3>
             foreach (var w in noiseAndW.Value)
             {
                 <p>@(w)</p>
