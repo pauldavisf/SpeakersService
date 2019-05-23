@@ -11,6 +11,6 @@ namespace SpeakersService.Models
 
         public double[] Speech { get; set; } // уровни речи для каждой полосы
 
-        public Dictionary<string, double[]> W { get; set; } // словарь "вид шума строкой" -> массив разборчивостей для каждой полосы
+        public Dictionary<string, double[]> W { get; set; } // словарь "вид шума строкой" -> массив разборчивостей для каждого q
     }
 }
