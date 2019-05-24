@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SpeakersService.Models
+namespace Models
 {
     public class SpeakerViewModel
     {

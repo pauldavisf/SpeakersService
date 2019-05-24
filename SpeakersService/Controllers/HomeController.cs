@@ -10,6 +10,7 @@ using Utilities;
 using System;
 using System.Collections.Generic;
 using static SpeakersService.Helpers.SpeakerExtension;
+using Models;
 
 namespace SpeakersService.Controllers
 {

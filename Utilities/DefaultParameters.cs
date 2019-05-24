@@ -97,6 +97,17 @@ namespace Utilities
 
         public static readonly double[] BrownNoiseLevels =
         {
+            67.1,
+            64.1,
+            61.1,
+            58.1,
+            55.1,
+            52.1,
+            49.1
+        };
+
+        public static readonly double[] FormantNoiseLevels =
+        {
             40.4,
             60.4,
             64.4,

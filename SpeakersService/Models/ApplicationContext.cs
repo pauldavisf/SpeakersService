@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Microsoft.EntityFrameworkCore;
+using Models;
 
 namespace SpeakersService.Models
 {

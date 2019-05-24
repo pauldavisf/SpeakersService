@@ -49,7 +49,7 @@ namespace Utilities
         {
             // считаем разборчивость в каждой полосе
 
-            var W = Intelligibility.W(speech,
+            var W = Intelligibility.GetWRange(speech,
                                       noise,
                                       DefaultParameters.k,
                                       DefaultParameters.deltaA,

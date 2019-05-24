@@ -1,5 +1,5 @@
 ﻿using System;
-using Models;
+using SpeakersService;
 using SpeakersService.Models;
 using System.Linq;
 

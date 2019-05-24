@@ -35,7 +35,7 @@ namespace Testing
             Console.WriteLine("");
             Console.WriteLine("Разборчивость:");
 
-            var testW = Intelligibility.W(speech, 
+            var testW = Intelligibility.GetWRange(speech, 
                                           DefaultParameters.WhiteNoiseLevels, 
                                           DefaultParameters.k, 
                                           DefaultParameters.deltaA, 
@@ -48,11 +48,6 @@ namespace Testing
 
             Console.WriteLine("");
             Console.WriteLine("Разборчивость напрямую:");
-
-            var directW = FileProcessing.GetIntelligibility(fileName);
-
-            foreach (var w in directW)
-                Console.WriteLine(w);
         }
     }
 }
