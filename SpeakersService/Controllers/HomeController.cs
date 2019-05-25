@@ -35,7 +35,7 @@ namespace SpeakersService.Controllers
                 viewModels.Add(model.ToViewModel());
             }
 
-            return View(viewModels);
+            return View("Upload", viewModels);
         }
 
         public void SaveSpeechToFile(double[] speech, string filename)
@@ -67,6 +67,21 @@ namespace SpeakersService.Controllers
                         outputFile.WriteLine(val);
                 }
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetNoiseLevels(double[] w, string[] selectedSpeakers)
+        {
+            var speakerList = new List<SpeakerViewModel>();
+            foreach(var speakerName in selectedSpeakers)
+            {
+                var speaker = _context.Files.FirstOrDefault(x => x.Name == speakerName);
+                speakerList.Add(speaker.ToViewModel());
+            }
+
+            var levels = Core.GetNoiseLevels(speakerList, -30, 30, w[0]);
+
+            return View("Index", levels);
         }
 
         [HttpPost]
