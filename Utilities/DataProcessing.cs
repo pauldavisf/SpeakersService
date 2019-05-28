@@ -38,7 +38,16 @@ namespace Utilities
                 string line;
                 while ((line = streamReader.ReadLine()) != null)
                 {
-                    var parsedPair = ParseLine(line);
+                    var parsedPair = new KeyValuePair<double,double>();
+                    try
+                    {
+                        parsedPair = ParseLine(line);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        break;
+                    }
 
                     if (summOfAmps.ContainsKey(parsedPair.Key))
                     {

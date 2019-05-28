@@ -61,7 +61,7 @@ namespace SpeakersService.Controllers
                     Directory.CreateDirectory(path);
                 }
 
-                using (StreamWriter outputFile = new StreamWriter(path + "/" + pair.Key, false, System.Text.Encoding.Default))
+                using (StreamWriter outputFile = new StreamWriter(path + "\\" + pair.Key, false, System.Text.Encoding.Default))
                 {
                     foreach (var val in pair.Value)
                         outputFile.WriteLine(val);
@@ -97,7 +97,7 @@ namespace SpeakersService.Controllers
                 }
 
                 // путь к папке Files
-                string path = "/Files/" + uploadedFile.FileName;
+                string path = "\\Files\\" + uploadedFile.FileName;
                 string filename = _appEnvironment.WebRootPath + path;
 
                 // сохраняем файл в папку Files в каталоге wwwroot
@@ -109,10 +109,10 @@ namespace SpeakersService.Controllers
                 var speech = FileProcessing.GetSpeechLevelsFromFile(filename);
                 var w = FileProcessing.GetIntelligibilityForAllNoises(speech, DefaultParameters.DefaultNoisesDictionary);
 
-                var speechFile = _appEnvironment.WebRootPath + "/Files/" + Path.GetFileNameWithoutExtension(filename) + "/speech.dat";
+                var speechFile = _appEnvironment.WebRootPath + "\\Files\\" + Path.GetFileNameWithoutExtension(filename) + "\\speech.dat";
                 SaveSpeechToFile(speech, speechFile);
 
-                var wPath = _appEnvironment.WebRootPath + "/Files/" + Path.GetFileNameWithoutExtension(filename) + "/W";
+                var wPath = _appEnvironment.WebRootPath + "\\Files\\" + Path.GetFileNameWithoutExtension(filename) + "\\W";
                 SaveWToFiles(w, wPath);
 
                 Speaker speaker = new Speaker { Name = uploadedFile.FileName, Speech_FileName = speechFile, Path = path, W_Path = wPath };
