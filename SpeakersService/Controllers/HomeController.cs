@@ -79,9 +79,18 @@ namespace SpeakersService.Controllers
                 speakerList.Add(speaker.ToViewModel());
             }
 
+            // худший диктор
+            var worstSpeaker = Core.GetWorstSpeaker(speakerList);
+                
             var levels = Core.GetNoiseLevels(speakerList, -30, 30, w[0]);
 
-            return View("Index", levels);
+            var result = new MainResult
+            {
+                Levels = levels,
+                SpeakerName = worstSpeaker.Name
+            };
+
+            return View("Index", result);
         }
 
         [HttpPost]

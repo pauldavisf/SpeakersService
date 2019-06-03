@@ -1,12 +1,11 @@
-﻿@model double[]
+﻿@model MainResult
 @{
     ViewData["Title"] = "Результаты";
 }
-
-<h3>Интегральные уровни помехи по октавным полосам:</h3>
+<h3>Интегральные уровни помехи по октавным полосам (построены по диктору @(Model.SpeakerName)):</h3>
 @{
-        foreach (var l in Model)
-        {
-                <p>@(l)</p>
-        }
+    foreach (var l in Model.Levels)
+    {
+        <p>@(l)</p>
+    }
 }
